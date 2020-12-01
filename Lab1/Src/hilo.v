@@ -4,12 +4,12 @@ module hilo (
     input  wire            cpu_clk_50M,
     input  wire            cpu_rst_n,
 
-    // è¾“å…¥ä¿¡å·
+    // Ğ´¶Ë¿Ú 
     input  wire            we,
     input  wire [`REG_BUS] hi_i,
     input  wire [`REG_BUS] lo_i,
     
-    // è¾“å‡ºhi loå¯„å­˜å™¨çš„å€¼
+    // ¶Á¶Ë¿Ú 
     output reg  [`REG_BUS] hi_o,
     output reg  [`REG_BUS] lo_o
     );
@@ -20,8 +20,8 @@ module hilo (
             lo_o <= `ZERO_WORD;
         end
         else if (we == `WRITE_ENABLE)begin
-            hi_o <= hi_i;            
-            lo_o <= lo_i;            
+            hi_o <= hi_i;            // ½«³Ë·¨½á¹ûmulresµÄÇ°32Î»¸øHI¼Ä´æÆ÷£¬
+            lo_o <= lo_i;            // ºó32Î»¸ølo¼Ä´æÆ÷
         end
     end
 

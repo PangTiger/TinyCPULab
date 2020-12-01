@@ -3,7 +3,7 @@
 module exe_stage (
     input  wire 					cpu_rst_n,
 
-    // ä»è¯‘ç é˜¶æ®µè·å¾—çš„ä¿¡æ¯
+    // ´ÓÒëÂë½×¶Î»ñµÃµÄĞÅÏ¢
     input  wire [`ALUTYPE_BUS	] 	exe_alutype_i,
     input  wire [`ALUOP_BUS	    ] 	exe_aluop_i,
     input  wire [`REG_BUS 		] 	exe_src1_i,
@@ -14,71 +14,54 @@ module exe_stage (
     input  wire [`REG_BUS 		] 	exe_din_i,
     input  wire                     exe_whilo_i,
     
-    // è¯»å–åˆ°çš„Hi Loå¯„å­˜å™¨çš„æ•°æ®
+    // ´ÓHILO¼Ä´æÆ÷»ñµÃµÄÊı¾İ 
     input  wire [`REG_BUS 		] 	hi_i,
     input  wire [`REG_BUS 		] 	lo_i,
 
-    // æ‰§è¡Œçº§è¾“å‡ºçš„ä¿¡å·
-    // æ‰§è¡Œçº§çš„aluop,ä¼ é€’ç»™è®¿å­˜çº§ç”¨äºåŒºåˆ†load storeæŒ‡ä»¤
+    // ËÍÖÁÖ´ĞĞ½×¶ÎµÄĞÅÏ¢
     output wire [`ALUOP_BUS	    ] 	exe_aluop_o,
-    
-    // è¦å†™å…¥çš„å¯„å­˜å™¨çš„åœ°å€
     output wire [`REG_ADDR_BUS 	] 	exe_wa_o,
-    
-    // å†™å¯„å­˜å™¨ä½¿èƒ½ä¿¡å·
     output wire 					exe_wreg_o,
-    
-    // å†™å…¥å¯„å­˜å™¨å †çš„æ•°æ®
     output wire [`REG_BUS 		] 	exe_wd_o,
-    
-    // ä»è¯‘ç çº§ä¼ é€’è€Œæ¥,åŒºåˆ†æ˜¯å¦æ˜¯loadæŒ‡ä»¤
     output wire 					exe_mreg_o,
-    
-    // ä»è¯‘ç çº§å¾—åˆ°çš„,å°†è¦åœ¨è®¿å­˜çº§å†™å…¥å†…éƒ¨çš„æ•°æ®
     output wire [`REG_BUS 		] 	exe_din_o,
-    
-    // Hi Loå¯„å­˜å™¨å†™ä½¿èƒ½ä¿¡å·
     output wire 					exe_whilo_o,
-    
-    // Hi Loå¯„å­˜å™¨è¦å†™å…¥çš„æ•°æ®
     output wire [`DOUBLE_REG_BUS] 	exe_hilo_o
     );
 
-    // éƒ¨åˆ†ä¿¡å·ç›´æ¥å‘åä¼ é€’
+    // Ö±½Ó´«µ½ÏÂÒ»½×¶Î
     assign exe_aluop_o = (cpu_rst_n == `RST_ENABLE) ? 8'b0 : exe_aluop_i;
     assign exe_mreg_o  = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : exe_mreg_i;
     assign exe_din_o   = (cpu_rst_n == `RST_ENABLE) ? 32'b0 : exe_din_i;
     assign exe_whilo_o = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : exe_whilo_i;
     
-    wire [`REG_BUS       ]      logicres;       // é€»è¾‘æŒ‡ä»¤çš„ç»“æœ
-    wire [`REG_BUS       ]      shiftres;       // ç§»ä½æŒ‡ä»¤çš„ç»“æœ
-    wire [`REG_BUS       ]      moveres;        // æ•°æ®ç§»åŠ¨æŒ‡ä»¤çš„ç»“æœ
-    wire [`REG_BUS       ]      hi_t;           // Hiçš„ç»“æœ
-    wire [`REG_BUS       ]      lo_t;           // Loçš„ç»“æœ
-    wire [`REG_BUS       ]      arithres;       // ç®—æ•°æŒ‡ä»¤çš„ç»“æœ
-    wire [`DOUBLE_REG_BUS]      mulres;         // ä¹˜æ³•æŒ‡ä»¤çš„ç»“æœ
+    wire [`REG_BUS       ]      logicres;       // ±£´æÂß¼­ÔËËãµÄ½á¹û
+    wire [`REG_BUS       ]      shiftres;       // ±£´æÒÆÎ»ÔËËã½á¹û
+    wire [`REG_BUS       ]      moveres;        // ±£´æÒÆ¶¯²Ù×÷µÄ½á¹û
+    wire [`REG_BUS       ]      hi_t;           // ±£´æHI¼Ä´æÆ÷µÄ×îĞÂÖµ
+    wire [`REG_BUS       ]      lo_t;           // ±£´æLO¼Ä´æÆ÷µÄ×îĞÂÖµ
+    wire [`REG_BUS       ]      arithres;       // ±£´æËãÊõ²Ù×÷µÄ½á¹û
+    wire [`DOUBLE_REG_BUS]      mulres;         // ±£´æ³Ë·¨²Ù×÷µÄ½á¹û
     
-    // æ ¹æ®å†…éƒ¨æ“ä½œç aluop,åˆ¤æ–­æ˜¯ä½•ç§é€»è¾‘æŒ‡ä»¤,è¿›è¡Œé€»è¾‘æŒ‡ä»¤çš„è¿ç®—
+    // ¸ù¾İÄÚ²¿²Ù×÷Âëaluop½øĞĞÂß¼­ÔËËã
     assign logicres = (cpu_rst_n == `RST_ENABLE)  ? `ZERO_WORD : 
-                      (exe_aluop_i == `MINIMIPS32_AND )  ? (exe_src1_i & exe_src2_i) : 
+                      (exe_aluop_i == `MINIMIPS32_AND )  ? (exe_src1_i & exe_src2_i) :
+                      (exe_aluop_i ==  `MINIMIPS32_NOR)  ? (~(exe_src1_i | exe_src2_i)) :
                       (exe_aluop_i == `MINIMIPS32_ORI )  ? (exe_src1_i | exe_src2_i) : 
                       (exe_aluop_i == `MINIMIPS32_LUI )  ? exe_src2_i : `ZERO_WORD;
 
-    // æ ¹æ®å†…éƒ¨æ“ä½œç aluop,åˆ¤æ–­æ˜¯ä½•ç§ç§»ä½æŒ‡ä»¤,æ‰§è¡Œç§»ä½æŒ‡ä»¤
+    // ¸ù¾İÄÚ²¿²Ù×÷Âëaluop½øĞĞÒÆÎ»ÔËËã
     assign shiftres = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : 
                       (exe_aluop_i == `MINIMIPS32_SLL )  ? (exe_src2_i << exe_src1_i) : `ZERO_WORD;
     
-    // hi_t lo_tæ˜¯hi loå¯„å­˜å™¨çš„å€¼
+    // ¸ù¾İÄÚ²¿²Ù×÷Âëaluop½øĞĞÊı¾İÒÆ¶¯£¬µÃµ½×îĞÂµÄHI¡¢LO¼Ä´æÆ÷µÄÖµ
     assign hi_t     = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : hi_i;
     assign lo_t     = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : lo_i;
-  
-    // æ‰§è¡Œæ•°æ®ç§»åŠ¨æŒ‡ä»¤
     assign moveres  = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : 
                       (exe_aluop_i == `MINIMIPS32_MFHI) ? hi_t :
                       (exe_aluop_i == `MINIMIPS32_MFLO) ? lo_t : `ZERO_WORD;
     
-    // TODO:è¯·æƒ³ä¸€æƒ³è¿™é‡Œæœ‰æ²¡æœ‰å¯ä»¥ä¼˜åŒ–çš„ä¿¡å·?æ˜¯ä¸æ˜¯æœ‰çš„ä¿¡å·å¯ä»¥åœ¨è¯‘ç çº§ç»™å‡º,ä¼ é€’åˆ°æ‰§è¡Œçº§?
-    // æ‰§è¡Œç®—æ•°æŒ‡ä»¤, é¡ºä¾¿è®¡ç®—å‡ºload storeæŒ‡ä»¤çš„å­˜å‚¨åœ°å€
+    // ¸ù¾İÄÚ²¿²Ù×÷Âëaluop½øĞĞËãÊõÔËËã
     assign arithres = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : 
                       (exe_aluop_i == `MINIMIPS32_ADD  )  ? (exe_src1_i + exe_src2_i) :
                       (exe_aluop_i == `MINIMIPS32_LB   )  ? (exe_src1_i + exe_src2_i) :
@@ -88,21 +71,18 @@ module exe_stage (
                       (exe_aluop_i == `MINIMIPS32_ADDIU)  ? (exe_src1_i + exe_src2_i) :
                       (exe_aluop_i == `MINIMIPS32_SUBU )  ? (exe_src1_i + (~exe_src2_i) + 1) :
                       (exe_aluop_i == `MINIMIPS32_SLT  )  ? (($signed(exe_src1_i) < $signed(exe_src2_i)) ? 32'b1 : 32'b0) :
+                      (exe_aluop_i == `MINIMIPS32_SLTI  )  ? (($signed(exe_src1_i) < $signed(exe_src2_i)) ? 32'b1 : 32'b0) :
                       (exe_aluop_i == `MINIMIPS32_SLTIU)  ? ((exe_src1_i < exe_src2_i) ? 32'b1 : 32'b0) : `ZERO_WORD;
     
-    // åˆ©ç”¨ç³»ç»Ÿå‡½æ•°æœ‰ç¬¦å·æ‰©å±•å’Œä¹˜æ³•è¿ç®—ç¬¦,æ‰§è¡Œä¹˜æ³•æŒ‡ä»¤
+    // ¸ù¾İÄÚ²¿²Ù×÷Âëaluop½øĞĞ³Ë·¨ÔËËã£¬²¢±£´æËÍÖÁÏÂÒ»½×¶Î
     assign mulres = ($signed(exe_src1_i) * $signed(exe_src2_i));
-  
-    // è¾“å‡ºè¦å†™å…¥Hiloçš„å€¼
     assign exe_hilo_o = (cpu_rst_n == `RST_ENABLE) ? `ZERO_DWORD : 
                       (exe_aluop_i == `MINIMIPS32_MULT)  ? mulres : `ZERO_DWORD;
-    
-    // ç»§ç»­ä¼ é€’å†™å¯„å­˜å™¨åœ°å€
+
     assign exe_wa_o   = (cpu_rst_n   == `RST_ENABLE ) ? 5'b0 	 : exe_wa_i;
-    // ç»§ç»­ä¼ é€’å†™å¯„å­˜å™¨ä½¿èƒ½ä¿¡å·
     assign exe_wreg_o = (cpu_rst_n   == `RST_ENABLE ) ? 1'b0 	 : exe_wreg_i;
     
-    // æ ¹æ®æ“ä½œç±»å‹alutypeç¡®å®šæ‰§è¡Œé˜¶æ®µæœ€ç»ˆçš„è¿ç®—ç»“æœï¼ˆæ—¢å¯èƒ½æ˜¯å¾…å†™å…¥ç›®çš„å¯„å­˜å™¨çš„æ•°æ®ï¼Œä¹Ÿå¯èƒ½æ˜¯è®¿é—®æ•°æ®å­˜å‚¨å™¨çš„åœ°å€ï¼‰
+    // ¸ù¾İ²Ù×÷ÀàĞÍalutypeÈ·¶¨Ö´ĞĞ½×¶Î×îÖÕµÄÔËËã½á¹û£¨¼È¿ÉÄÜÊÇ´ıĞ´ÈëÄ¿µÄ¼Ä´æÆ÷µÄÊı¾İ£¬Ò²¿ÉÄÜÊÇ·ÃÎÊÊı¾İ´æ´¢Æ÷µÄµØÖ·£©
     assign exe_wd_o = (cpu_rst_n   == `RST_ENABLE ) ? `ZERO_WORD : 
                       (exe_alutype_i == `LOGIC    ) ? logicres  :
                       (exe_alutype_i == `SHIFT    ) ? shiftres  :

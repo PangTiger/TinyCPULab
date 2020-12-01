@@ -5,61 +5,61 @@ module id_stage(
     
     input  wire [`INST_ADDR_BUS]    id_pc_i,
 
-    // ä»æŒ‡ä»¤å­˜å‚¨å™¨è¯»å‡ºçš„æŒ‡ä»¤å­—
+    // ´ÓÖ¸Áî´æ´¢Æ÷¶Á³öµÄÖ¸Áî×Ö
     input  wire [`INST_BUS     ]    id_inst_i,
 
-    // ä»é€šç”¨å¯„å­˜å™¨å †è¯»ç«¯å£1è¯»å‡ºçš„æ•°æ®, æˆ‘ä»¬ç«¯å£1æ¥è¯»rså¯„å­˜å™¨çš„å€¼
+    // ´ÓÍ¨ÓÃ¼Ä´æÆ÷¶Ñ¶Á¶Ë¿Ú1¶Á³öµÄÊı¾İ, ÎÒÃÇ¶Ë¿Ú1À´¶Árs¼Ä´æÆ÷µÄÖµ
     input  wire [`REG_BUS      ]    rd1,
     
-     // ä»é€šç”¨å¯„å­˜å™¨å †è¯»ç«¯å£2è¯»å‡ºçš„æ•°æ®,æˆ‘ä»¬ç«¯å£2æ¥è¯»rtå¯„å­˜å™¨çš„å€¼
+     // ´ÓÍ¨ÓÃ¼Ä´æÆ÷¶Ñ¶Á¶Ë¿Ú2¶Á³öµÄÊı¾İ,ÎÒÃÇ¶Ë¿Ú2À´¶Árt¼Ä´æÆ÷µÄÖµ
     input  wire [`REG_BUS      ]    rd2,
     
-    // è¾“å‡ºè¯‘ç ä¿¡æ¯
-    // aluè¿ç®—ç±»å‹
+    // Êä³öÒëÂëĞÅÏ¢
+    // aluÔËËãÀàĞÍ
     output wire [`ALUTYPE_BUS  ]    id_alutype_o,
     
-    // alu operation code : aluæ“ä½œç 
+    // alu operation code : alu²Ù×÷Âë
     output wire [`ALUOP_BUS    ]    id_aluop_o,
     
-    // whilo -> write hi lo : æ˜¯å¦å†™hi loå¯„å­˜å™¨
+    // whilo -> write hi lo : ÊÇ·ñĞ´hi lo¼Ä´æÆ÷
     output wire                     id_whilo_o,
     
-    // æ˜¯å¦æ˜¯loadæŒ‡ä»¤, å¦‚load byte, load word
+    // ÊÇ·ñÊÇloadÖ¸Áî, Èçload byte, load word
     output wire                     id_mreg_o,
     
-    // write address : å¤„äºè¯‘ç é˜¶æ®µçš„,å¾…å†™å…¥çš„ç›®çš„å¯„å­˜å™¨çš„åœ°å€
+    // write address : ´¦ÓÚÒëÂë½×¶ÎµÄ,´ıĞ´ÈëµÄÄ¿µÄ¼Ä´æÆ÷µÄµØÖ·
     output wire [`REG_ADDR_BUS ]    id_wa_o,
     
-    // wreg -> write reg : æ˜¯å¦è¦å†™ç›®çš„å¯„å­˜å™¨
+    // wreg -> write reg : ÊÇ·ñÒªĞ´Ä¿µÄ¼Ä´æÆ÷
     output wire                     id_wreg_o,
     
-    // din -> data input : å¤„äºè¯‘ç é˜¶æ®µçš„,å¾…å†™å…¥data_ramçš„æ•°æ®
+    // din -> data input : ´¦ÓÚÒëÂë½×¶ÎµÄ,´ıĞ´Èëdata_ramµÄÊı¾İ
     output wire [`REG_BUS      ]    id_din_o,
     
-    // è¯‘ç é˜¶æ®µçš„æºæ“ä½œæ•°1
+    // ÒëÂë½×¶ÎµÄÔ´²Ù×÷Êı1
     output wire [`REG_BUS      ]    id_src1_o,
     
-    // è¯‘ç é˜¶æ®µçš„æºæ“ä½œæ•°2
+    // ÒëÂë½×¶ÎµÄÔ´²Ù×÷Êı2
     output wire [`REG_BUS      ]    id_src2_o,
     
-    // regfileçš„è¯»ä½¿èƒ½ä¿¡å·, ç«¯å£1
+    // regfileµÄ¶ÁÊ¹ÄÜĞÅºÅ, ¶Ë¿Ú1
     output wire                     rreg1,
     
-    // regfileçš„è¯»åœ°å€ä¿¡å·, ç«¯å£1
+    // regfileµÄ¶ÁµØÖ·ĞÅºÅ, ¶Ë¿Ú1
     output wire [`REG_ADDR_BUS ]    ra1,
     
-    // regfileçš„è¯»ä½¿èƒ½ä¿¡å·, ç«¯å£2
+    // regfileµÄ¶ÁÊ¹ÄÜĞÅºÅ, ¶Ë¿Ú2
     output wire                     rreg2,
     
-    // regfileçš„è¯»åœ°å€ä¿¡å·, ç«¯å£2
+    // regfileµÄ¶ÁµØÖ·ĞÅºÅ, ¶Ë¿Ú2
     output wire [`REG_ADDR_BUS ]    ra2
     );
-    // åœ¨è¿™é‡Œæˆ‘ä»¬é‡‡å–å°ç«¯åº, åŸä¹¦çš„åšæ³•æ˜¯å¤§ç«¯åº! ä¸æ˜¯å°ç«¯åº.åŸä¹¦ä¸­å¼„æ··äº†å¤§ç«¯å’Œå°ç«¯çš„æ¦‚å¿µ
-    // å°ç«¯åº: å­—èŠ‚ä¸­least significant byte -> lowest address
-    // å³byte offset 2'b00 å¯¹åº”Least significant byte
+    // ÔÚÕâÀïÎÒÃÇ²ÉÈ¡Ğ¡¶ËĞò, Ô­ÊéµÄ×ö·¨ÊÇ´ó¶ËĞò! ²»ÊÇĞ¡¶ËĞò.Ô­ÊéÖĞÅª»ìÁË´ó¶ËºÍĞ¡¶ËµÄ¸ÅÄî
+    // Ğ¡¶ËĞò: ×Ö½ÚÖĞleast significant byte -> lowest address
+    // ¼´byte offset 2'b00 ¶ÔÓ¦Least significant byte
     wire [`INST_BUS] id_inst = id_inst_i;
 
-    // æŒ‡ä»¤çš„å„ä¸ªå­—æ®µ, op func rd rs rt sa imm
+    // Ö¸ÁîµÄ¸÷¸ö×Ö¶Î, op func rd rs rt sa imm
     wire [5 :0] op   = id_inst[31:26];
     wire [5 :0] func = id_inst[5 : 0];
     wire [4 :0] rd   = id_inst[15:11];
@@ -68,9 +68,9 @@ module id_stage(
     wire [4 :0] sa   = id_inst[10: 6];
     wire [15:0] imm  = id_inst[15: 0]; 
 
-    //è¯‘ç é€»è¾‘,ç¡®å®šå½“å‰æ˜¯å“ªä¸€æ¡æŒ‡ä»¤
-    //TODO: è·³è½¬åˆ°"æŒ‡ä»¤æ˜¯å¦‚ä½•è¯‘ç çš„"
-     /*-------------------------è¯‘ç çº§å†…éƒ¨çš„ç¬¬ä¸€çº§é€»è¾‘------------------------------
+    //ÒëÂëÂß¼­,È·¶¨µ±Ç°ÊÇÄÄÒ»ÌõÖ¸Áî
+    //TODO: Ìø×ªµ½"Ö¸ÁîÊÇÈçºÎÒëÂëµÄ"
+     /*-------------------------ÒëÂë¼¶ÄÚ²¿µÄµÚÒ»¼¶Âß¼­------------------------------
     wire inst_reg  = ~|op;
     wire inst_add  = inst_reg& func[5]&~func[4]&~func[3]&~func[2]&~func[1]&~func[0];
     wire inst_subu = inst_reg& func[5]&~func[4]&~func[3]&~func[2]& func[1]& func[0];
@@ -90,11 +90,15 @@ module id_stage(
     wire inst_sw   = op[5]&~op[4]& op[3]&~op[2]& op[1]& op[0];
     ------------------------------------------------------------------------------*/
     
-    //TODO: è·³è½¬åˆ°æŒ‡ä»¤çš„è¯‘ç ç¤ºæ„å›¾
-    wire inst_reg  = (op!=6'd0);
+    //TODO: Ìø×ªµ½Ö¸ÁîµÄÒëÂëÊ¾ÒâÍ¼
+    wire inst_reg  = (op==6'd0);
     wire inst_add  = inst_reg&(func==6'b100_000);
     wire inst_subu = inst_reg&(func==6'b100_011);
     wire inst_slt  = inst_reg&(func==6'b101_010);
+    wire inst_slti = (op==6'b001_010);
+    
+    wire inst_nor =  inst_reg&(func==6'b100_111);
+    
     wire inst_and  = inst_reg&(func==6'b100_100);
     wire inst_mult = inst_reg&(func==6'b011_000);
     wire inst_mfhi = inst_reg&(func==6'b010_000);
@@ -110,11 +114,11 @@ module id_stage(
     wire inst_sw   = (op==6'b101_011);
     
 
-    //è¯‘ç çº§å†…éƒ¨çš„ç¬¬äºŒçº§é€»è¾‘
-    /*-------------------- ç”Ÿæˆå…·ä½“çš„å†…éƒ¨æ§åˆ¶ä¿¡å· --------------------*/
-    //æ“ä½œç±»å‹alutype
+    //ÒëÂë¼¶ÄÚ²¿µÄµÚ¶ş¼¶Âß¼­
+    /*-------------------- Éú³É¾ßÌåµÄÄÚ²¿¿ØÖÆĞÅºÅ --------------------*/
+    //²Ù×÷ÀàĞÍalutype
     
-    /* åŸä¹¦ä¸­çš„æŒ‰æ¯ä¸€ä½è¡¨è¾¾çš„æ–¹å¼
+    /* Ô­ÊéÖĞµÄ°´Ã¿Ò»Î»±í´ïµÄ·½Ê½
     assign id_alutype_o[2] = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : inst_sll;
     assign id_alutype_o[1] = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : 
                              (inst_and | inst_mfhi | inst_mflo | inst_ori | inst_lui);
@@ -123,30 +127,30 @@ module id_stage(
                              inst_addiu | inst_sltiu | inst_lb |inst_lw | inst_sb | inst_sw);
     */
     
-    /*æ²¡æœ‰å®å®šä¹‰æƒ…å†µä¸‹çš„è¡¨è¾¾æ–¹å¼
+    /*Ã»ÓĞºê¶¨ÒåÇé¿öÏÂµÄ±í´ï·½Ê½
     assign id_alutype_o = (inst_add | inst_subu | inst_slt | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw) ? 3'b001 :
                           (inst_ori | inst_lui | inst_and) ? 3'b010 :
                           (inst_mfhi|inst_mflo) ? 3'b011 :
                           (inst_sll) ? 3'b100 : 3'b000;
     */
-    //TODO:è·³è½¬åˆ°æ§åˆ¶ä¿¡å·çœŸå€¼è¡¨
-    //TODO: è¿™ç§å†™æ³•ä¼šå¯¼è‡´è¿‡äºå†—é•¿,æœ€å¥½æ˜¯å®šä¹‰å‡ ä¸ªä¸­é—´å˜é‡,ä»£ç ä¼šæ›´æ¸…æ™°,è¿™äº›ä¸­é—´å˜é‡ä¹Ÿå¯ä»¥ä¼ é€’ç»™ä¸‹ä¸€çº§,è¿™éƒ½æ˜¯å¯ä»¥ä¼˜åŒ–çš„æ–¹å‘!
-    //åˆ©ç”¨alutypeå®å®šä¹‰çš„è¡¨è¾¾æ–¹å¼
-    assign id_alutype_o = (inst_add|inst_subu|inst_slt|inst_addiu|inst_sltiu|inst_lb|inst_lw|inst_sb|inst_sw) ? `ARITH :
-                          (inst_ori|inst_lui|inst_and) ? `LOGIC :
+    //TODO:Ìø×ªµ½¿ØÖÆĞÅºÅÕæÖµ±í
+    //TODO: ÕâÖÖĞ´·¨»áµ¼ÖÂ¹ıÓÚÈß³¤,×îºÃÊÇ¶¨Òå¼¸¸öÖĞ¼ä±äÁ¿,´úÂë»á¸üÇåÎú,ÕâĞ©ÖĞ¼ä±äÁ¿Ò²¿ÉÒÔ´«µİ¸øÏÂÒ»¼¶,Õâ¶¼ÊÇ¿ÉÒÔÓÅ»¯µÄ·½Ïò!
+    //ÀûÓÃalutypeºê¶¨ÒåµÄ±í´ï·½Ê½
+    assign id_alutype_o = (inst_add|inst_subu|inst_slt|inst_slti|inst_addiu|inst_sltiu|inst_lb|inst_lw|inst_sb|inst_sw) ? `ARITH :
+                          (inst_ori|inst_lui|inst_and|inst_nor) ? `LOGIC :
                           (inst_mfhi|inst_mflo) ? `MOVE :
                           (inst_sll) ? `SHIFT : `NOP;
     
     
     
-    // å†…éƒ¨æ“ä½œç aluop
-    // TODO: è·³è½¬çœ‹aluopå®šä¹‰
-    // æ³¨æ„: aluopçš„å®šä¹‰å…·æœ‰å¾ˆå¤§çš„éšæ„æ€§,æˆ‘ä»¬åœ¨defines.vä¸­è¡¥å…¨äº†æ–°å¢çš„ä¸¤æ¡æŒ‡ä»¤çš„å®šä¹‰
-    // å†…éƒ¨çš„aluop åªéœ€è¦8bitä½æ¥åŒºåˆ†ä¸åŒçš„80+æ¡æŒ‡ä»¤  
-    // æ³¨æ„ç†è§£è¿™é‡Œçš„aluopæ¯ä¸€ä¸ªbitä½èƒŒåçš„çœŸå€¼è¡¨
-    // ç†è§£äº†æ¯ä¸€ä½èƒŒåçš„çœŸå€¼è¡¨å°±èƒ½çŸ¥é“ä¸ºä»€ä¹ˆè¿™é‡Œè¦è¿™æ ·assign
+    // ÄÚ²¿²Ù×÷Âëaluop
+    // TODO: Ìø×ª¿´aluop¶¨Òå
+    // ×¢Òâ: aluopµÄ¶¨Òå¾ßÓĞºÜ´óµÄËæÒâĞÔ,ÎÒÃÇÔÚdefines.vÖĞ²¹È«ÁËĞÂÔöµÄÁ½ÌõÖ¸ÁîµÄ¶¨Òå
+    // ÄÚ²¿µÄaluop Ö»ĞèÒª8bitÎ»À´Çø·Ö²»Í¬µÄ80+ÌõÖ¸Áî  
+    // ×¢ÒâÀí½âÕâÀïµÄaluopÃ¿Ò»¸öbitÎ»±³ºóµÄÕæÖµ±í
+    // Àí½âÁËÃ¿Ò»Î»±³ºóµÄÕæÖµ±í¾ÍÄÜÖªµÀÎªÊ²Ã´ÕâÀïÒªÕâÑùassign
     
-    /*åŸä¹¦ä¸­æŒ‰ä½è¿›è¡Œå®šä¹‰çš„æ–¹å¼
+    /*Ô­ÊéÖĞ°´Î»½øĞĞ¶¨ÒåµÄ·½Ê½
     assign id_aluop_o[7]   = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : 
                              (inst_lb | inst_lw | inst_sb | inst_sw);
     assign id_aluop_o[6]   = 1'b0;
@@ -168,10 +172,11 @@ module id_stage(
                              inst_ori | inst_lui | inst_addiu | inst_sltiu);
     */
     
-    //ä½¿ç”¨å®å®šä¹‰ä¹‹åçš„è¡¨è¾¾æ–¹å¼
+    //Ê¹ÓÃºê¶¨ÒåÖ®ºóµÄ±í´ï·½Ê½
     assign id_aluop_o = inst_add    ?    `MINIMIPS32_ADD   :
                         inst_subu   ?    `MINIMIPS32_SUBU  :
                         inst_slt    ?    `MINIMIPS32_SLT   :
+                        inst_slti    ?    `MINIMIPS32_SLTI   :
                         inst_and    ?    `MINIMIPS32_AND   :
                         inst_mult   ?    `MINIMIPS32_MULT  :
                         inst_mfhi   ?    `MINIMIPS32_MFHI  :
@@ -185,70 +190,71 @@ module id_stage(
                         inst_lw     ?    `MINIMIPS32_LW    :
                         inst_sb     ?    `MINIMIPS32_SB    :
                         inst_sw     ?    `MINIMIPS32_SW    :
+                        inst_nor    ?    `MINIMIPS32_NOR   :
                         8'b0;
                         
 
-    // write reg output : è¯‘ç çº§çš„å½“å‰æŒ‡ä»¤æ˜¯å¦ä¼šåœ¨å†™å›çº§è¿›è¡Œ å†™å¯„å­˜å™¨ çš„æ“ä½œ
+    // write reg output : ÒëÂë¼¶µÄµ±Ç°Ö¸ÁîÊÇ·ñ»áÔÚĞ´»Ø¼¶½øĞĞ Ğ´¼Ä´æÆ÷ µÄ²Ù×÷
     assign id_wreg_o       = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : 
-                             (inst_add | inst_subu | inst_slt | inst_and | inst_mfhi | inst_mflo | inst_sll | 
-                             inst_ori | inst_lui | inst_addiu | inst_sltiu | inst_lb | inst_lw);
-    // ç›®å‰åªæœ‰multæŒ‡ä»¤ä¼šå†™Hi Loè¿™ä¸¤ä¸ªç‰¹æ®Šå¯„å­˜å™¨
+                             (inst_add | inst_subu | inst_slt | inst_slti | inst_and | inst_mfhi | inst_mflo | inst_sll | 
+                             inst_ori | inst_lui | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_nor);
+    // Ä¿Ç°Ö»ÓĞmultÖ¸Áî»áĞ´Hi LoÕâÁ½¸öÌØÊâ¼Ä´æÆ÷
     assign id_whilo_o      = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : inst_mult;
-    // å½“å‰æŒ‡ä»¤æ˜¯å¦æ˜¯ç§»ä½æŒ‡ä»¤,è¯¥ä¿¡å·ç”¨äºé€‰æ‹©æºæ“ä½œæ•°,
-    // å› ä¸ºç§»ä½æŒ‡ä»¤çš„æºæ“ä½œæ•°1æ¥è‡ªäºæŒ‡ä»¤ä¸­çš„Saå­—æ®µ
+    // µ±Ç°Ö¸ÁîÊÇ·ñÊÇÒÆÎ»Ö¸Áî,¸ÃĞÅºÅÓÃÓÚÑ¡ÔñÔ´²Ù×÷Êı,
+    // ÒòÎªÒÆÎ»Ö¸ÁîµÄÔ´²Ù×÷Êı1À´×ÔÓÚÖ¸ÁîÖĞµÄSa×Ö¶Î
     wire shift = inst_sll;
-    // å½“å‰æŒ‡ä»¤çš„æºæ“ä½œæ•°2æ˜¯å¦æ¥è‡ªç«‹å³æ•°æ‰©å±•å¾—åˆ°
-    wire immsel = inst_ori | inst_lui | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw;
-    // rtsel : register target selection, ç›®æ ‡å¯„å­˜å™¨çš„é€‰æ‹©
-    // å½“å‰æŒ‡ä»¤æ˜¯å¦ä¼šå†™å…¥ç›®çš„å¯„å­˜å™¨
-    wire rtsel  = inst_ori | inst_lui | inst_addiu | inst_sltiu | inst_lb | inst_lw;
-    // å½“å‰æŒ‡ä»¤éœ€è¦å°†16ä½å®½åº¦çš„ç«‹å³æ•°å­—æ®µè¿›è¡Œæœ‰ç¬¦å·æ‰©å±•è‡³32ä½
-    wire sext   = inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw;
-    // ä¸“é—¨ç”¨äºLUIæŒ‡ä»¤çš„ä¿¡å·,å½“å‰æŒ‡ä»¤æ˜¯LUIæŒ‡ä»¤æ—¶,æ§åˆ¶ç«‹å³æ•°æ‰©å±•imm_extçš„å€¼ä¸ºç«‹å³æ•°å·¦ç§»16ä½
+    // µ±Ç°Ö¸ÁîµÄÔ´²Ù×÷Êı2ÊÇ·ñÀ´×ÔÁ¢¼´ÊıÀ©Õ¹µÃµ½
+    wire immsel = inst_ori | inst_lui | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw |inst_slti;
+    // rtsel : register target selection, Ä¿±ê¼Ä´æÆ÷µÄÑ¡Ôñ
+    // µ±Ç°Ö¸ÁîÊÇ·ñ»áĞ´Èërt»¹ÊÇrd×Ö¶Î¶ÔÓ¦µÄ¼Ä´æÆ÷
+    wire rtsel  = inst_ori | inst_lui | inst_addiu | inst_sltiu |inst_slti | inst_lb | inst_lw;
+    // µ±Ç°Ö¸ÁîĞèÒª½«16Î»¿í¶ÈµÄÁ¢¼´Êı×Ö¶Î½øĞĞÓĞ·ûºÅÀ©Õ¹ÖÁ32Î»
+    wire sext   = inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw | inst_slti;
+    // ×¨ÃÅÓÃÓÚLUIÖ¸ÁîµÄĞÅºÅ,µ±Ç°Ö¸ÁîÊÇLUIÖ¸ÁîÊ±,¿ØÖÆÁ¢¼´ÊıÀ©Õ¹imm_extµÄÖµÎªÁ¢¼´Êı×óÒÆ16Î»
     wire upper  = inst_lui;
-    // mreg -> memory to register : æ„æ€æ˜¯è¯¥æŒ‡ä»¤éœ€è¦ä»å†…å­˜ä¸­è¯»å–æ•°æ®åˆ°å¯„å­˜å™¨ä¸­,è¿™åœ¨MIPSä¸­å°±æ˜¯loadåŠ è½½æŒ‡ä»¤
+    // mreg -> memory to register : ÒâË¼ÊÇ¸ÃÖ¸ÁîĞèÒª´ÓÄÚ´æÖĞ¶ÁÈ¡Êı¾İµ½¼Ä´æÆ÷ÖĞ,ÕâÔÚMIPSÖĞ¾ÍÊÇload¼ÓÔØÖ¸Áî
     assign id_mreg_o       = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : (inst_lb | inst_lw);
-    // é€šç”¨å¯„å­˜å™¨å †çš„ç«¯å£1çš„è¯»ä½¿èƒ½ä¿¡å·
+    // Í¨ÓÃ¼Ä´æÆ÷¶ÑµÄ¶Ë¿Ú1µÄ¶ÁÊ¹ÄÜĞÅºÅ
     assign rreg1 = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : 
-                   (inst_add | inst_subu | inst_slt | inst_and | inst_mult | 
-                   inst_ori | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw);
-    // é€šç”¨å¯„å­˜å™¨å †çš„ç«¯å£2çš„è¯»ä½¿èƒ½ä¿¡å·
+                   (inst_add | inst_subu | inst_slt | inst_and | inst_mult | inst_slti |
+                   inst_ori | inst_addiu | inst_sltiu | inst_lb | inst_lw | inst_sb | inst_sw | inst_nor);
+    // Í¨ÓÃ¼Ä´æÆ÷¶ÑµÄ¶Ë¿Ú2µÄ¶ÁÊ¹ÄÜĞÅºÅ
     assign rreg2 = (cpu_rst_n == `RST_ENABLE) ? 1'b0 : 
                    (inst_add | inst_subu | inst_slt | inst_and | inst_mult | inst_sll | 
-                   inst_sb | inst_sw);
+                   inst_sb | inst_sw | inst_nor);
     /*------------------------------------------------------------------------------*/
 
-    // è®¿é—®é€šç”¨å¯„å­˜å™¨å †ç«¯å£1çš„è¯»åœ°å€,æˆ‘ä»¬å°†ä»–ç”¨æ¥è¯»GPR[rs]çš„å€¼
+    // ·ÃÎÊÍ¨ÓÃ¼Ä´æÆ÷¶Ñ¶Ë¿Ú1µÄ¶ÁµØÖ·,ÎÒÃÇ½«ËûÓÃÀ´¶ÁGPR[rs]µÄÖµ
     assign ra1   = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : rs;
-    // è®¿é—®é€šç”¨å¯„å­˜å™¨å †ç«¯å£2çš„è¯»åœ°å€,æˆ‘ä»¬å°†ä»–ç”¨æ¥è¯»GPR[rt]çš„å€¼
+    // ·ÃÎÊÍ¨ÓÃ¼Ä´æÆ÷¶Ñ¶Ë¿Ú2µÄ¶ÁµØÖ·,ÎÒÃÇ½«ËûÓÃÀ´¶ÁGPR[rt]µÄÖµ
     assign ra2   = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : rt;
     
-    // å¯¹äºä¸€äº›æŒ‡ä»¤çš„æºæ“ä½œæ•°æ˜¯ç«‹å³æ•°æ‰©å±•å¾—åˆ°çš„,è¿™é‡Œçš„muxå®ç°ä¸åŒæƒ…å†µä¸‹çš„ç«‹å³æ•°æ‰©å±•
-    // åŒ…æ‹¬: LUIæŒ‡ä»¤ æœ‰ç¬¦å·æ‰©å±•çš„æŒ‡ä»¤ æ— ç¬¦å·æ‰©å±•çš„æŒ‡ä»¤
+    // ¶ÔÓÚÒ»Ğ©Ö¸ÁîµÄÔ´²Ù×÷ÊıÊÇÁ¢¼´ÊıÀ©Õ¹µÃµ½µÄ,ÕâÀïµÄmuxÊµÏÖ²»Í¬Çé¿öÏÂµÄÁ¢¼´ÊıÀ©Õ¹
+    // °üÀ¨: LUIÖ¸Áî ÓĞ·ûºÅÀ©Õ¹µÄÖ¸Áî ÎŞ·ûºÅÀ©Õ¹µÄÖ¸Áî
     wire [31:0] imm_ext = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD :
                           (upper == `UPPER_ENABLE  ) ? (imm << 16) :
                           (sext  == `SIGNED_EXT    ) ? {{16{imm[15]}}, imm} : {{16{1'b0}}, imm};
                                             
-    // å¾—åˆ°å¾…å†™å…¥ç›®çš„å¯„å­˜å™¨çš„åœ°å€,å¯èƒ½æ˜¯rtå­—æ®µä¹Ÿå¯èƒ½æ˜¯rdå­—æ®µ                                         
+    // µÃµ½´ıĞ´ÈëÄ¿µÄ¼Ä´æÆ÷µÄµØÖ·,¿ÉÄÜÊÇrt×Ö¶ÎÒ²¿ÉÄÜÊÇrd×Ö¶Î                                         
     assign id_wa_o      = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : 
                           (rtsel == `RT_ENABLE     ) ? rt : rd;
     
-    // storeæŒ‡ä»¤è¦å­˜å‚¨çš„æ•°æ®æ¥è‡ªrt,è€Œrtçš„å€¼æ¥è‡ªé€šç”¨å¯„å­˜å™¨è¯»ç«¯å£2                   
-    // è¿™é‡Œå°†è·å¾—è®¿å­˜é˜¶æ®µstoreå­˜å‚¨æŒ‡ä»¤è¦å­˜å…¥æ•°æ®å¯„å­˜å™¨çš„æ•°æ®
+    // storeÖ¸ÁîÒª´æ´¢µÄÊı¾İÀ´×Ôrt,¶ørtµÄÖµÀ´×ÔÍ¨ÓÃ¼Ä´æÆ÷¶Á¶Ë¿Ú2                   
+    // ÕâÀï½«»ñµÃ·Ã´æ½×¶Îstore´æ´¢Ö¸ÁîÒª´æÈëÊı¾İ¼Ä´æÆ÷µÄÊı¾İ
     assign id_din_o     = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD : rd2;
 
-    // å¦‚æœshiftä¿¡å·æœ‰æ•ˆ, è¡¨æ˜æ˜¯ç§»ä½æŒ‡ä»¤, æºæ“ä½œæ•°æ¥è‡ªsaå­—æ®µæ‰©å±•å¾—åˆ°, è‹¥rreg1ä¿¡å·æ‹‰é«˜, åˆ™æºæ“ä½œæ•°å–rd1çš„å€¼
-    // rd1æ˜¯å¯„å­˜å™¨è¯»ç«¯å£1çš„è¯»æ•°æ®, è¯»ç«¯å£1è¢«ç”¨æ¥è¯»å–GPR[rs]çš„å€¼
-    // å¦åˆ™å°†æºæ“ä½œæ•°1é»˜è®¤è®¾ç½®ä¸º0
-    // è·å¾—æºæ“ä½œæ•°1
+    // Èç¹ûshiftĞÅºÅÓĞĞ§, ±íÃ÷ÊÇÒÆÎ»Ö¸Áî, Ô´²Ù×÷ÊıÀ´×Ôsa×Ö¶ÎÀ©Õ¹µÃµ½, Èôrreg1ĞÅºÅÀ­¸ß, ÔòÔ´²Ù×÷ÊıÈ¡rd1µÄÖµ
+    // rd1ÊÇ¼Ä´æÆ÷¶Á¶Ë¿Ú1µÄ¶ÁÊı¾İ, ¶Á¶Ë¿Ú1±»ÓÃÀ´¶ÁÈ¡GPR[rs]µÄÖµ
+    // ·ñÔò½«Ô´²Ù×÷Êı1Ä¬ÈÏÉèÖÃÎª0
+    // »ñµÃÔ´²Ù×÷Êı1
     assign id_src1_o = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD :
                        (shift == `SHIFT_ENABLE  ) ? {27'b0, sa} :
                        (rreg1 == `READ_ENABLE   ) ? rd1 : `ZERO_WORD;
 
-    // å¦‚æœimmselä¿¡å·æœ‰æ•ˆ, è¡¨æ˜æ˜¯Iå‹æŒ‡ä»¤, æºæ“ä½œæ•°æ¥è‡ªimmå­—æ®µæ‰©å±•å¾—åˆ°, è‹¥rreg2ä¿¡å·æ‹‰é«˜, åˆ™æºæ“ä½œæ•°å–rd2çš„å€¼
-    // rd2æ˜¯å¯„å­˜å™¨è¯»ç«¯å£2çš„è¯»æ•°æ®, è¯»ç«¯å£2è¢«ç”¨æ¥è¯»å–GPR[rt]çš„å€¼
-    // å¦åˆ™å°†æºæ“ä½œæ•°2é»˜è®¤è®¾ç½®ä¸º0
-    // è·å¾—æºæ“ä½œæ•°2,å¯èƒ½æ¥è‡ªç«‹å³æ•°æ‰©å±•,ä¹Ÿå¯èƒ½æ¥è‡ªrd2,å³GPR[rt]
+    // Èç¹ûimmselĞÅºÅÓĞĞ§, ±íÃ÷ÊÇIĞÍÖ¸Áî, Ô´²Ù×÷ÊıÀ´×Ôimm×Ö¶ÎÀ©Õ¹µÃµ½, Èôrreg2ĞÅºÅÀ­¸ß, ÔòÔ´²Ù×÷ÊıÈ¡rd2µÄÖµ
+    // rd2ÊÇ¼Ä´æÆ÷¶Á¶Ë¿Ú2µÄ¶ÁÊı¾İ, ¶Á¶Ë¿Ú2±»ÓÃÀ´¶ÁÈ¡GPR[rt]µÄÖµ
+    // ·ñÔò½«Ô´²Ù×÷Êı2Ä¬ÈÏÉèÖÃÎª0
+    // »ñµÃÔ´²Ù×÷Êı2,¿ÉÄÜÀ´×ÔÁ¢¼´ÊıÀ©Õ¹,Ò²¿ÉÄÜÀ´×Ôrd2,¼´GPR[rt]
     assign id_src2_o = (cpu_rst_n == `RST_ENABLE) ? `ZERO_WORD :
                        (immsel == `IMM_ENABLE   ) ? imm_ext : 
                        (rreg2 == `READ_ENABLE   ) ? rd2 : `ZERO_WORD;

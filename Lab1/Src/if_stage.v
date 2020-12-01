@@ -10,24 +10,23 @@ module if_stage (
     );
     
     wire [`INST_ADDR_BUS] pc_next; 
-    assign pc_next = pc + 4;    //è®¡ç®—ä¸‹ä¸€æ¡æŒ‡ä»¤çš„åœ°å€,PCæ˜¯å­—èŠ‚å¯»å€,æœ€å°å¯»å€å•å…ƒæ˜¯å­—èŠ‚,MIPS32æ˜¯32bitæŒ‡ä»¤é•¿åº¦,æ‰€ä»¥æ¯æ¬¡PCå¢åŠ 4              Ö·
+    assign pc_next = pc + 4;                  // ¼ÆËãÏÂÒ»ÌõÖ¸ÁîµÄµØÖ·
     always @(posedge cpu_clk_50M) begin
 		if (cpu_rst_n == `RST_ENABLE) begin
-			ice <= `CHIP_DISABLE;		      // å¤ä½æ—¶,ä¸å–æŒ‡ä»¤ç¦ç”¨æŒ‡ä»¤å­˜å‚¨å™¨inst_rom 
+			ice <= `CHIP_DISABLE;		      // ¸´Î»µÄÊ±ºòÖ¸Áî´æ´¢Æ÷½ûÓÃ  
 		end else begin
-			ice <= `CHIP_ENABLE; 		      // å¤ä½ç»“æŸ,å¯ä»¥å–æŒ‡ä»¤,æŒ‡ä»¤å­˜å‚¨å™¨ä½¿èƒ½
+			ice <= `CHIP_ENABLE; 		      // ¸´Î»½áÊøºó£¬Ö¸Áî´æ´¢Æ÷Ê¹ÄÜ
 		end
 	end
 
     always @(posedge cpu_clk_50M) begin
         if (ice == `CHIP_DISABLE)
-            pc <= `PC_INIT;                   // å½“æŒ‡ä»¤romç¦ç”¨æ—¶,PCä¿æŒåˆå§‹å€¼(åœ¨æœ¬æ¬¡è®¾è®¡ä¸­å®šä¹‰ä¸º0X0000_0000)
+            pc <= `PC_INIT;                   // Ö¸Áî´æ´¢Æ÷½ûÓÃµÄÊ±ºò£¬PC±£³Ö³õÊ¼Öµ£¨MiniMIPS32ÖĞÉèÖÃÎª0x00000000£©
         else begin
-            pc <= pc_next;                    //Ö¸ æŒ‡ä»¤å­˜å‚¨å™¨ä½¿èƒ½å,å°†pc_nextçš„å€¼ä¸Šå‡æ²¿æ—¶èµ‹ç»™pcå¯„å­˜å™¨ 
+            pc <= pc_next;                    // Ö¸Áî´æ´¢Æ÷Ê¹ÄÜºó£¬PCÖµÃ¿Ê±ÖÓÖÜÆÚ¼Ó4 	
         end
     end
     
-    //æŒ‡ä»¤å­˜å‚¨å™¨ç¦ç”¨æ—¶,ä¿æŒè®¿é—®inst_romçš„åœ°å€ä¸º0x0000_0000
-    //å…¶ä»–æƒ…å†µä¸‹,å°†pcçš„å€¼ä½œä¸ºè®¿é—®inst_romçš„åœ°å€
-    assign iaddr = (ice == `CHIP_DISABLE) ? `PC_INIT : pc;    
+    assign iaddr = (ice == `CHIP_DISABLE) ? `PC_INIT : pc;    // »ñµÃ·ÃÎÊÖ¸Áî´æ´¢Æ÷µÄµØÖ·
+
 endmodule
