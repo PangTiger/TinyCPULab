@@ -1,43 +1,43 @@
 `timescale 1ns / 1ps
 
-/*------------------- È«¾Ö²ÎÊı -------------------*/
-`define RST_ENABLE      1'b0                // ¸´Î»ĞÅºÅÓĞĞ§  RST_ENABLE
-`define RST_DISABLE     1'b1                // ¸´Î»ĞÅºÅÎŞĞ§
-`define ZERO_WORD       32'h00000000        // 32Î»µÄÊıÖµ0
-`define ZERO_DWORD      64'b0               // 64Î»µÄÊıÖµ0
-`define WRITE_ENABLE    1'b1                // Ê¹ÄÜĞ´
-`define WRITE_DISABLE   1'b0                // ½ûÖ¹Ğ´
-`define READ_ENABLE     1'b1                // Ê¹ÄÜ¶Á
-`define READ_DISABLE    1'b0                // ½ûÖ¹¶Á
-`define ALUOP_BUS       7 : 0               // ÒëÂë½×¶ÎµÄÊä³öaluop_oµÄ¿í¶È
-`define SHIFT_ENABLE    1'b1                // ÒÆÎ»Ö¸ÁîÊ¹ÄÜ 
-`define ALUTYPE_BUS     2 : 0               // ÒëÂë½×¶ÎµÄÊä³öalutype_oµÄ¿í¶È  
-`define TRUE_V          1'b1                // Âß¼­¡°Õæ¡±  
-`define FALSE_V         1'b0                // Âß¼­¡°¼Ù¡±  
-`define CHIP_ENABLE     1'b1                // Ğ¾Æ¬Ê¹ÄÜ  
-`define CHIP_DISABLE    1'b0                // Ğ¾Æ¬½ûÖ¹  
-`define WORD_BUS        31: 0               // 32Î»¿í
-`define DOUBLE_REG_BUS  63: 0               // Á½±¶µÄÍ¨ÓÃ¼Ä´æÆ÷µÄÊı¾İÏß¿í¶È
-`define RT_ENABLE       1'b1                // rtÑ¡ÔñÊ¹ÄÜ
-`define SIGNED_EXT      1'b1                // ·ûºÅÀ©Õ¹Ê¹ÄÜ
-`define IMM_ENABLE      1'b1                // Á¢¼´ÊıÑ¡ÔñÊ¹ÄÜ
-`define UPPER_ENABLE    1'b1                // Á¢¼´ÊıÒÆÎ»Ê¹ÄÜ
-`define MREG_ENABLE     1'b1                // Ğ´»Ø½×¶Î´æ´¢Æ÷½á¹ûÑ¡ÔñĞÅºÅ
-`define BSEL_BUS        3 : 0               // Êı¾İ´æ´¢Æ÷×Ö½ÚÑ¡ÔñĞÅºÅ¿í¶È
-`define PC_INIT         32'h00000000        // PC³õÊ¼Öµ
+/*------------------- å…¨å±€å‚æ•° -------------------*/
+`define RST_ENABLE      1'b0                // å¤ä½ä¿¡å·æœ‰æ•ˆ  RST_ENABLE
+`define RST_DISABLE     1'b1                // å¤ä½ä¿¡å·æ— æ•ˆ
+`define ZERO_WORD       32'h00000000        // 32ä½çš„æ•°å€¼0
+`define ZERO_DWORD      64'b0               // 64ä½çš„æ•°å€¼0
+`define WRITE_ENABLE    1'b1                // ä½¿èƒ½å†™
+`define WRITE_DISABLE   1'b0                // ç¦æ­¢å†™
+`define READ_ENABLE     1'b1                // ä½¿èƒ½è¯»
+`define READ_DISABLE    1'b0                // ç¦æ­¢è¯»
+`define ALUOP_BUS       7 : 0               // è¯‘ç é˜¶æ®µçš„è¾“å‡ºaluop_oçš„å®½åº¦
+`define SHIFT_ENABLE    1'b1                // ç§»ä½æŒ‡ä»¤ä½¿èƒ½ 
+`define ALUTYPE_BUS     2 : 0               // è¯‘ç é˜¶æ®µçš„è¾“å‡ºalutype_oçš„å®½åº¦  
+`define TRUE_V          1'b1                // é€»è¾‘â€œçœŸâ€  
+`define FALSE_V         1'b0                // é€»è¾‘â€œå‡â€  
+`define CHIP_ENABLE     1'b1                // èŠ¯ç‰‡ä½¿èƒ½  
+`define CHIP_DISABLE    1'b0                // èŠ¯ç‰‡ç¦æ­¢  
+`define WORD_BUS        31: 0               // 32ä½å®½
+`define DOUBLE_REG_BUS  63: 0               // ä¸¤å€çš„é€šç”¨å¯„å­˜å™¨çš„æ•°æ®çº¿å®½åº¦
+`define RT_ENABLE       1'b1                // rté€‰æ‹©ä½¿èƒ½
+`define SIGNED_EXT      1'b1                // ç¬¦å·æ‰©å±•ä½¿èƒ½
+`define IMM_ENABLE      1'b1                // ç«‹å³æ•°é€‰æ‹©ä½¿èƒ½
+`define UPPER_ENABLE    1'b1                // ç«‹å³æ•°ç§»ä½ä½¿èƒ½
+`define MREG_ENABLE     1'b1                // å†™å›é˜¶æ®µå­˜å‚¨å™¨ç»“æœé€‰æ‹©ä¿¡å·
+`define BSEL_BUS        3 : 0               // æ•°æ®å­˜å‚¨å™¨å­—èŠ‚é€‰æ‹©ä¿¡å·å®½åº¦
+`define PC_INIT         32'h00000000        // PCåˆå§‹å€¼
 
-/*------------------- Ö¸Áî×Ö²ÎÊı -------------------*/
-`define INST_ADDR_BUS   31: 0               // Ö¸ÁîµÄµØÖ·¿í¶È
-`define INST_BUS        31: 0               // Ö¸ÁîµÄÊı¾İ¿í¶È
+/*------------------- æŒ‡ä»¤å­—å‚æ•° -------------------*/
+`define INST_ADDR_BUS   31: 0               // æŒ‡ä»¤çš„åœ°å€å®½åº¦
+`define INST_BUS        31: 0               // æŒ‡ä»¤çš„æ•°æ®å®½åº¦
 
-// ²Ù×÷ÀàĞÍalutype
+// æ“ä½œç±»å‹alutype
 `define NOP             3'b000
 `define ARITH           3'b001
 `define LOGIC           3'b010
 `define MOVE            3'b011
 `define SHIFT           3'b100
 
-// ÄÚ²¿²Ù×÷Âëaluop
+// å†…éƒ¨æ“ä½œç aluop
 `define MINIMIPS32_LUI             8'h05
 `define MINIMIPS32_MFHI            8'h0C
 `define MINIMIPS32_MFLO            8'h0D
@@ -55,13 +55,13 @@
 `define MINIMIPS32_SB              8'h98
 `define MINIMIPS32_SW              8'h9A
 
-//ĞÂ¼ÓÖ¸ÁîÄÚ²¿²Ù×÷Âëaluop
+//æ–°åŠ æŒ‡ä»¤å†…éƒ¨æ“ä½œç aluop
 `define MINIMIPS32_NOR             8'h24
 `define MINIMIPS32_SLTI            8'h25
 
 
-/*------------------- Í¨ÓÃ¼Ä´æÆ÷¶Ñ²ÎÊı -------------------*/
-`define REG_BUS         31: 0               // ¼Ä´æÆ÷Êı¾İ¿í¶È
-`define REG_ADDR_BUS    4 : 0               // ¼Ä´æÆ÷µÄµØÖ·¿í¶È
-`define REG_NUM         32                  // ¼Ä´æÆ÷ÊıÁ¿32¸ö
-`define REG_NOP         5'b00000            // ÁãºÅ¼Ä´æÆ÷
+/*------------------- é€šç”¨å¯„å­˜å™¨å †å‚æ•° -------------------*/
+`define REG_BUS         31: 0               // å¯„å­˜å™¨æ•°æ®å®½åº¦
+`define REG_ADDR_BUS    4 : 0               // å¯„å­˜å™¨çš„åœ°å€å®½åº¦
+`define REG_NUM         32                  // å¯„å­˜å™¨æ•°é‡32ä¸ª
+`define REG_NOP         5'b00000            // é›¶å·å¯„å­˜å™¨

@@ -4,7 +4,7 @@ module memwb_reg (
     input  wire                     cpu_clk_50M,
 	input  wire                     cpu_rst_n,
 
-	// À´×Ô·Ã´æ½×¶ÎµÄĞÅÏ¢
+  // æ¥è‡ªè®¿å­˜é˜¶æ®µçš„ä¿¡æ¯
 	input  wire [`REG_ADDR_BUS  ]   mem_wa,
 	input  wire                     mem_wreg,
 	input  wire [`REG_BUS       ] 	mem_dreg,
@@ -15,7 +15,7 @@ module memwb_reg (
 	input  wire                     mem_whilo,
 	input  wire [`DOUBLE_REG_BUS]   mem_hilo,
 
-	// ËÍÖÁĞ´»Ø½×¶ÎµÄĞÅÏ¢ 
+  // é€è‡³å†™å›é˜¶æ®µçš„ä¿¡æ¯ 
 	output reg  [`REG_ADDR_BUS  ]   wb_wa,
 	output reg                      wb_wreg,
 	output reg  [`REG_BUS       ]   wb_dreg,
@@ -28,7 +28,7 @@ module memwb_reg (
     );
 
     always @(posedge cpu_clk_50M) begin
-		// ¸´Î»µÄÊ±ºò½«ËÍÖÁĞ´»Ø½×¶ÎµÄĞÅÏ¢Çå0
+		// å¤ä½æ—¶æµæ°´çº¿å¯„å­˜å™¨æ¸…é›¶
 		if (cpu_rst_n == `RST_ENABLE) begin
 			wb_wa       <= `REG_NOP;
 			wb_wreg     <= `WRITE_DISABLE;
@@ -38,7 +38,7 @@ module memwb_reg (
 			wb_whilo    <= `WRITE_DISABLE;
 			wb_hilo	    <= `ZERO_DWORD;
 		end
-		// ½«À´×Ô·Ã´æ½×¶ÎµÄĞÅÏ¢¼Ä´æ²¢ËÍÖÁĞ´»Ø½×¶Î
+    // æ­£å¸¸ä¼ é€’ä¿¡å·
 		else begin
 			wb_wa 	    <= mem_wa;
 			wb_wreg     <= mem_wreg;
