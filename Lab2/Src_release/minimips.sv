@@ -267,20 +267,8 @@ module minimips
     .rfra2        (rfra2        ),
     // interface with rf
     .rfre1        (rfre1        ),
-    .rfre2        (rfre2        ),
-
-
-    .ex_fwd_rfwa  (exe_o_rfwa    ),
-    .ex_fwd_rfwe  (exe_o_rfwe    ),
-
-    .mem_fwd_rfwa (mem_o_rfwa   ),
-    .mem_fwd_rfwe (mem_o_rfwe   ),
-
-    .wb_fwd_rfwa  (rfwa    ),
-    .wb_fwd_rfwe  (rfwe    ),
-    .ex_fwd_rfwd  (exe_o_alures  ),
-    .mem_fwd_rfwd (mem_o_alures ),
-    .wb_fwd_rfwd  (rfwd));
+    .rfre2        (rfre2        )    
+    );
 
   stage_exe u_stage_exe (
     // Inputs

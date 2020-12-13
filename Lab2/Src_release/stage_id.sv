@@ -12,17 +12,6 @@ module stage_id
     output reg_enum     rfra2,
     input  word_t       rfrd2,
 
-
-    input  word_t       ex_fwd_rfwd,
-    input  reg_enum     ex_fwd_rfwa,
-    input  logic        ex_fwd_rfwe,
-    input  word_t       mem_fwd_rfwd,
-    input  reg_enum     mem_fwd_rfwa,
-    input  logic        mem_fwd_rfwe,
-    input  word_t       wb_fwd_rfwd,
-    input  reg_enum     wb_fwd_rfwa,
-    input  logic        wb_fwd_rfwe,
-
     // interface with regs_ifid
     input  inst_t       id_i_inst,
     // interface with regs_idexe
@@ -202,35 +191,10 @@ module stage_id
   logic                is_half;
   logic                is_byte;
   // data dependence
-  logic                rf1_idex_haz;
-  logic                rf1_idmem_haz;
-  logic                rf1_idwb_haz;
-
-  word_t               new_rfrd1;
-  word_t               new_rfrd2;
-  logic                rf2_idex_haz;
-  logic                rf2_idmem_haz;
-  logic                rf2_idwb_haz;
 
   // passthrogh : none
   assign rfra1           = rs;
   assign rfra2           = rt;
-
-  assign rf1_idex_haz    = (rfra1 == ex_fwd_rfwa)&&ex_fwd_rfwe;
-  assign rf1_idmem_haz   = (rfra1 == mem_fwd_rfwa)&&mem_fwd_rfwe;
-  assign rf1_idwb_haz    = (rfra1 == wb_fwd_rfwa)&&wb_fwd_rfwe;
-
-  assign new_rfrd1       = rf1_idex_haz ? ex_fwd_rfwd :
-    rf1_idmem_haz ? mem_fwd_rfwd :
-    rf1_idwb_haz ? wb_fwd_rfwd : rfrd1;
-
-  assign rf2_idex_haz    = (rfra2 == ex_fwd_rfwa)&&ex_fwd_rfwe;
-  assign rf2_idmem_haz   = (rfra2 == mem_fwd_rfwa)&&mem_fwd_rfwe;
-  assign rf2_idwb_haz    = (rfra2 == wb_fwd_rfwa)&&wb_fwd_rfwe;
-
-  assign new_rfrd2       = rf2_idex_haz ? ex_fwd_rfwd :
-    rf2_idmem_haz ? mem_fwd_rfwd :
-    rf2_idwb_haz ? wb_fwd_rfwd : rfrd2;
 
 
   always_comb begin
@@ -287,10 +251,10 @@ module stage_id
     rfre2             = 1'b1;
     // datapaths
     id_o_rfwa         = rtsel ? rt : rd;
-    id_o_src1         = shiftsel ? sa : new_rfrd1;
+    id_o_src1         = shiftsel ? sa : rfrd1;
     temp              = sextsel ? {{16{imm[15]}},imm} : {16'h0000, imm};
     temp              = uppersel ? (imm << 16) : temp;
-    id_o_src2         = immsel ? temp : new_rfrd2;
+    id_o_src2         = immsel ? temp : rfrd2;
   end
 
   // alu decode
