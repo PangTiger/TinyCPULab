@@ -11,7 +11,12 @@ module stage_id
     output logic        rfre2,
     output reg_enum     rfra2,
     input  word_t       rfrd2,
-
+    
+    //interface with jump op
+    input im_addr_t     id_i_pc,
+    
+    //interface with load dependence
+    
     // interface with regs_ifid
     input  inst_t       id_i_inst,
     // interface with regs_idexe

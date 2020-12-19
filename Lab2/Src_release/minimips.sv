@@ -56,20 +56,19 @@ module minimips
     .lo_o       (lo_o       )
   );
 
-  im_addr_t             imaddr;
   logic                 imce;
   inst_t                inst;
 
   im u_im (
     // Inputs
-    .cpu_clk_50M(cpu_clk_50M),
-    .cpu_rst_n  (cpu_rst_n  ),
-    .imaddr_d4     ({{2'b00},imaddr [31 : 2]} ),
-    .imwe       (en         ),
-    .imdin      (outer_inst ),
-    .imce       (imce       ),
+    .cpu_clk_50M(cpu_clk_50M                ),
+    .cpu_rst_n  (cpu_rst_n                  ),
+    .imaddr_d4  ({{2'b00},if_o_pc [31 : 2]} ),
+    .imwe       (en                         ),
+    .imdin      (outer_inst                 ),
+    .imce       (imce                       ),
     // Outputs
-    .inst       (inst       )
+    .inst       (inst                       )
   );
 
   logic                 dmce;
@@ -91,13 +90,18 @@ module minimips
   );
 
   inst_t                id_i_inst;
+  im_addr_t             if_o_pc;
+  im_addr_t             id_i_pc;
 
   regs_ifid u_regs_ifid (
     // Inputs
-    .inst     (inst     ),
+    .inst       (inst       ),
     // Outputs
-    .id_i_inst(id_i_inst)
-  );
+    .id_i_inst  (id_i_inst  ),
+    .cpu_clk_50M(cpu_clk_50M),
+    .cpu_rst_n  (cpu_rst_n  ),
+    .if_o_pc    (if_o_pc    ),
+    .id_i_pc (id_i_pc ));
 
   logic                 id_o_dm2rf;
   logic                 id_o_hilowe;
@@ -241,9 +245,8 @@ module minimips
     .cpu_rst_n  (cpu_rst_n  ),
     // Outputs
     // interface with im
-    .imaddr     (imaddr     ),
-    .imce       (imce       )
-  );
+    .imce       (imce       ),
+    .if_o_pc (if_o_pc));
 
   stage_id u_stage_id (
     // Inputs
@@ -267,8 +270,8 @@ module minimips
     .rfra2        (rfra2        ),
     // interface with rf
     .rfre1        (rfre1        ),
-    .rfre2        (rfre2        )    
-    );
+    .rfre2        (rfre2        ),
+    .id_i_pc (id_i_pc));
 
   stage_exe u_stage_exe (
     // Inputs
