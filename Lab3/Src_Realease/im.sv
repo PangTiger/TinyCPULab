@@ -79,12 +79,12 @@ module im (
       
       //Data dependence test case begin
 //      
-      mem[0] = inst_t'({32'd0})                                       ;
-      mem[1] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1234})                ; 
-      mem[2] = inst_t'({ ORI, REG_AT, REG_AT, 16'habcd})              ;
-      mem[3] = inst_t'({ LUI, 5'h0, REG_V0, 16'h1230})                ;
-      mem[4] = inst_t'({ ORI, REG_V0, REG_V0, 16'habcd})              ;
-      mem[5] = inst_t'({ 6'h0, REG_AT, REG_V0, REG_V1, 5'h0, SUBU})   ;
+    //   mem[0] = inst_t'({32'd0})                                       ;
+    //   mem[1] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1234})                ; 
+    //   mem[2] = inst_t'({ ORI, REG_AT, REG_AT, 16'habcd})              ;
+    //   mem[3] = inst_t'({ LUI, 5'h0, REG_V0, 16'h1230})                ;
+    //   mem[4] = inst_t'({ ORI, REG_V0, REG_V0, 16'habcd})              ;
+    //   mem[5] = inst_t'({ 6'h0, REG_AT, REG_V0, REG_V1, 5'h0, SUBU})   ;
 //      mem[6] = inst_t'({ 6'h0, REG_V0, REG_V1, REG_ZERO, 5'h0, MULT}) ;
 //      mem[7] = inst_t'({32'd0})                                       ;
       //mem[7] = inst_t'({ 16'h0, REG_A0,5'h0,MFHI})                    ;
@@ -93,7 +93,21 @@ module im (
       
       //Data dependence test case end
       
-      //Simple jump inst test case begin
+      //Only Simple jump inst test case begin
+                              
+     mem[0] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1})                   ;
+     mem[1] = inst_t'({ J, 26'h14})                                  ;
+     mem[2] = inst_t'({32'd0})                                       ;
+     mem[3] = inst_t'({ JAL, 26'h20})                                ;
+     mem[4] = inst_t'({ LUI, 5'h0, REG_AT, 16'h3})                   ;
+     mem[5] = inst_t'({ ADDI, REG_ZERO, REG_V0, 16'hc})              ;
+     mem[6] = inst_t'({ 6'h0, REG_V0, REG_ZERO, REG_ZERO, 5'h0, JR}) ;
+     mem[7] = inst_t'({ LUI, 5'h0, REG_AT, 16'h2})                   ;
+     mem[8] = inst_t'({ 32'd0})                                      ;
+      
+      //Simple jump inst test case end
+      
+      //Complex Jump and branch inst test case begin
                               
 //      mem[0] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1})                   ;
 //      mem[1] = inst_t'({ J, 26'h14})                                  ;
@@ -113,8 +127,9 @@ module im (
 //      mem[15]= inst_t'({ J, 26'h3c})                                  ;
 //      mem[16]= inst_t'({32'd0})                                       ;
       
-      //Simple jump inst test case end
-      
+      //Complex Jump and branch inst test case end
+
+
       //load dependence test case begin
       /*
       mem[0] = inst_t'({ ORI, REG_ZERO, REG_AT, 16'habab})            ;

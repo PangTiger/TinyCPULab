@@ -42,7 +42,33 @@ by CPU兴趣小组
 
 TIPS: 这里的实现是不是需要一个MUX?
 
-### 测试代码
+### 测试代码1: Jump指令
+你需要在im.sv中检查一下目前的指令存储器的内容是否是“Only Simple jump inst test case”对应的内容。
+```
+	.set noat
+   	.set noreorder
+   	.globl main
+   	.text
+main:
+   lui 	$at, 0x1        # (PC = 0x00)	$at($1) = 0x10000
+   j 	L2              # (PC = 0x04) 	jump to L2(addr = 0x14)
+   nop			# (PC = 0x08) 	delayslot instrution
+   
+L3:
+   jal 	L4              # (PC = 0x0C) 	jump tp L4(addr = 0x24) $ra($31) = 0x14
+   lui 	$at, 0x3        # (PC = 0x10) 	delayslot instrution, $at = 0x30000
+
+L2:
+   la 	$v0, L3         # (PC = 0x14) 	$v0($2) = L3's addr
+   jr 	$v0             # (PC = 0x1C) 	jump tO L3(addr = 0x0c)
+   lui 	$at, 0x2        # (PC = 0x20) 	delayslot instrution, $at = 0x20000   
+
+L4:
+   nop
+```
+
+### 测试代码2：Jump and branch共同测试
+你需要在im.sv中检查一下目前的指令存储器的内容是否是“Complex Jump and branch inst test case”对应的内容，如果不是的话要把注释修改掉。
 ```
 	.set noat
    	.set noreorder
