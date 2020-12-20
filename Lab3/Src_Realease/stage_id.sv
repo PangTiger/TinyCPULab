@@ -140,7 +140,7 @@ module stage_id
   assign is_OR           = (is_inst_r && func == OR );
   assign is_NOR          = (is_inst_r && func == NOR );
   assign is_XOR          = (is_inst_r && func == XOR );
-  assign is_SLL          = (is_inst_r && func == SLL );
+  assign is_SLL          = (is_inst_r && func == SLL )&&(!is_EMPTY);
   assign is_SRL          = (is_inst_r && func == SRL );
   assign is_SRA          = (is_inst_r && func == SRA );
   assign is_SLLV         = (is_inst_r && func == SLLV);
@@ -265,8 +265,8 @@ module stage_id
     endcase
         `endif
     // todo : step3 - determine dst addr value source [R[rd], R[rt], hilo]
-    dst_rd            = is_ADD || is_ADDI || is_SLT ||is_AND || is_SLL || is_SUBU || is_MFHI|| is_MFLO;
-    dst_rt            = is_ADDIU|| is_SLTIU || is_LB || is_LUI || is_LW || is_ORI;
+    dst_rd            = is_ADD  || is_SLT ||is_AND || is_SLL || is_SUBU || is_MFHI|| is_MFLO;
+    dst_rt            = is_ADDIU || is_ADDI || is_SLTIU || is_LB || is_LUI || is_LW || is_ORI;
     dst_hilo          = is_MULT;
     dst_dont_care     = is_EMPTY || is_SB || is_SW;
         `ifndef SYNTHESIS

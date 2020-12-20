@@ -96,7 +96,7 @@ module im (
       //Only Simple jump inst test case begin
                               
      mem[0] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1})                   ;
-     mem[1] = inst_t'({ J, 26'h14})                                  ;
+     mem[1] = inst_t'({ J, 26'h5})                                  ;
      mem[2] = inst_t'({32'd0})                                       ;
      mem[3] = inst_t'({ JAL, 26'h20})                                ;
      mem[4] = inst_t'({ LUI, 5'h0, REG_AT, 16'h3})                   ;
@@ -110,7 +110,7 @@ module im (
       //Complex Jump and branch inst test case begin
                               
 //      mem[0] = inst_t'({ LUI, 5'h0, REG_AT, 16'h1})                   ;
-//      mem[1] = inst_t'({ J, 26'h14})                                  ;
+//      mem[1] = inst_t'({ J, 26'h5})                                  ;
 //      mem[2] = inst_t'({32'd0})                                       ;
 //      mem[3] = inst_t'({ JAL, 26'h20})                                ;
 //      mem[4] = inst_t'({ LUI, 5'h0, REG_AT, 16'h3})                   ;
@@ -124,7 +124,7 @@ module im (
 //      mem[12]= inst_t'({ LUI, 5'h0, REG_AT, 16'h6})                   ;
 //      mem[13]= inst_t'({ BEQ, REG_V0, REG_AT, 16'hfffc})              ;
 //      mem[14]= inst_t'({32'd0})                                       ;
-//      mem[15]= inst_t'({ J, 26'h3c})                                  ;
+//      mem[15]= inst_t'({ J, 26'hf})                                  ;
 //      mem[16]= inst_t'({32'd0})                                       ;
       
       //Complex Jump and branch inst test case end
