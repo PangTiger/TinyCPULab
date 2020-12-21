@@ -295,6 +295,7 @@ module stage_id
     id_o_src2         = immsel ? temp : new_rfrd2;
   end
 
+  
   // alu decode
   always_comb begin
     // todo : step4 - determine alutype

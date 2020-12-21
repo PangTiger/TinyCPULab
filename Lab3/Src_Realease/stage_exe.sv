@@ -78,6 +78,7 @@ module stage_exe (
         {WIDTH_REG{exe_i_alutype[1]}} & logicres |
         {WIDTH_REG{exe_i_alutype[2]}} & moveres |
         {WIDTH_REG{exe_i_alutype[3]}} & shiftres;
+          
     end
 
 endmodule
