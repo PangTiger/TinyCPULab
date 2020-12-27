@@ -238,6 +238,7 @@ module stage_id
   always_comb begin
     word_t temp;
     // todo : step1 - determine source 1 [R[rs], sa]
+    // only shift instructions will use 'sa' field of the instruction
     shiftsel          = is_SLL; // source of src1
     // todo : step2 - determine source 2 [R[rt], SignExtImm, ZeroExtImm, Imm << 16]
     src2_rt           = is_ADD || is_SLT || is_SUBU || is_AND || is_MULT || is_SLL;
@@ -246,7 +247,6 @@ module stage_id
     src2_zero_ext_imm = is_ORI;
     src2_dont_care    = is_EMPTY || is_MFHI || is_MFLO;
         // for behavioral sim
-        `ifndef SYNTHESIS
     unique casez (1'b1) // fixme : 3-level MUX -> 2-level MUX ?
       src2_rt : {sextsel, uppersel, immsel}           = 3'b000;
       src2_upper_imm : {sextsel, uppersel, immsel}    = 3'b011;
@@ -254,37 +254,17 @@ module stage_id
       src2_zero_ext_imm : {sextsel, uppersel, immsel} = 3'b001;
       src2_dont_care : {sextsel, uppersel, immsel}    = 3'b000;
     endcase
-        `endif
-        `ifdef SYNTHESIS
-    unique casez (1'b1) // fixme : 3-level MUX -> 2-level MUX ?
-      src2_rt : {sextsel, uppersel, immsel}           = 3'bXX0;
-      src2_upper_imm : {sextsel, uppersel, immsel}    = 3'bX11;
-      src2_sign_ext_imm : {sextsel, uppersel, immsel} = 3'b101;
-      src2_zero_ext_imm : {sextsel, uppersel, immsel} = 3'b001;
-      src2_dont_care : {sextsel, uppersel, immsel}    = 3'bXXX;
-    endcase
-        `endif
     // todo : step3 - determine dst addr value source [R[rd], R[rt], hilo]
     dst_rd            = is_ADD  || is_SLT ||is_AND || is_SLL || is_SUBU || is_MFHI|| is_MFLO;
     dst_rt            = is_ADDIU || is_ADDI || is_SLTIU || is_LB || is_LUI || is_LW || is_ORI;
     dst_hilo          = is_MULT;
     dst_dont_care     = is_EMPTY || is_SB || is_SW;
-        `ifndef SYNTHESIS
     unique casez (1'b1)
       dst_rd : {rtsel, id_o_rfwe, id_o_hilowe}        = 3'b010;
       dst_rt : {rtsel, id_o_rfwe, id_o_hilowe}        = 3'b110;
       dst_hilo : {rtsel, id_o_rfwe, id_o_hilowe}      = 3'b001;
       dst_dont_care : {rtsel, id_o_rfwe, id_o_hilowe} = 3'b000;
     endcase
-        `endif
-        `ifdef SYNTHESIS
-    unique casez (1'b1)
-      dst_rd : {rtsel, id_o_rfwe, id_o_hilowe}        = 3'b010;
-      dst_rt : {rtsel, id_o_rfwe, id_o_hilowe}        = 3'b110;
-      dst_hilo : {rtsel, id_o_rfwe, id_o_hilowe}      = 3'bX01;
-      dst_dont_care : {rtsel, id_o_rfwe, id_o_hilowe} = 3'bXXX;
-    endcase
-        `endif
     rfre1             = 1'b1;
     rfre2             = 1'b1;
     // datapaths
