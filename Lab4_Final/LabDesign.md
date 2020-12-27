@@ -22,7 +22,44 @@ BLTZ
 2. 我们提供的CPU控制信号的编码表
 
 ## 测试汇编代码&Testbench
-汇编代码如下
+汇编代码如下，大家可以使用MARZ辅助判断CPU执行的结果。
+```
+#Test case 1
+lui $t1,0xfedc	# Register 9 (t1) should be 0xfedc0000
+slti $t2,$t1,0x0001 # Register 10 (t2) should be 0x0001
+nop
+nop
+nop
+nop
+#Test case 2
+ori $at,$t1,0x1234  # Register 1 (at) should be 0xfedc1234
+xori $t3,$at,0x5678 # Register 11 (t3) should be 0xfedc444c
+nop
+nop
+nop
+nop
+#Test case 3
+ori $v0,$zero,0x2333 # Register 2 (v0) should be 0x2333
+multu $at,$v0        # hi should be 0x230a, lo should be 0xdc54bc5c
+nop
+nop
+nop
+nop
+nop
+mfhi $t4             # Register 12 (t4) should be 0x0000230a
+mflo $t5             # Register 13 (t5) should be 0xdc54bc5c
+#Test case 4
+sub $t6,$at,$v0      # Register 14 (t6) should be 0xfedbef01
+nop
+nop
+#Test case 5
+bltz $t1,L1
+nop
+lui $t7,0x1111       # cpu should skip this instruction
+L1:
+ori $t7,0x8888       # Register 15 (t7) should be 0x8888
+```
 
+同时，最新版的``im.sv``（指令存储器）文件也进行了更新，使用自己版本源代码的同学需要拷贝一下最新的``im.sv``。
 ## 分数评定
 3小时内实现的指令越多分数则越高。
