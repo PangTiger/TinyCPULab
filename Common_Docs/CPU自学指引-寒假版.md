@@ -47,4 +47,5 @@
 
 HDLbits是一个不错的在线"刷题"网站，它会提出设计需求，要求你在指定的文本框中写出代码来完成设计，网站共有6个Topics，前两个Topics属于新手福音，能够帮助你快速熟悉SystemVerilog的用法，后四个Topics分别是组合逻辑、时序逻辑、阅读仿真、写Testbench测试文件，不仅适合初学者入门，也适合用来系统的复习一遍数字设计的知识。此网站建议长期食用，如果觉得题目太多比较头大的话，刷完前两个新手福音的章节之后可以每个子话题挑几个题目来做：）
 
-补充：知乎上有一个关于HDLbits的专栏：HDLBits中文导学，链接：https://www.zhihu.com/column/c_1131528588117385216，其详细介绍了每一道题目的写法和原理，但作者是使用Verilog来完成的（SystemVerilog是Verilog的扩展，类似于C++与C的关系，SystemVerilog引入了新的数据类型和不同的关键字来避免设计者犯错），对于初学者而言，入门用Verilog还是systemVerilog都可以，建议都简单了解一下。此外，群文件/文档资料/HDLBits.zip是李天瑞师兄使用原汁原味的SystemVerilog语法完成的刷题的答案，可以和知乎的专栏搭配食用。
+补充：知乎上有一个关于HDLbits的专栏：HDLBits中文导学，链接：https://www.zhihu.com/column/c_1131528588117385216
+其详细介绍了每一道题目的写法和原理，但作者是使用Verilog来完成的（SystemVerilog是Verilog的扩展，类似于C++与C的关系，SystemVerilog引入了新的数据类型和不同的关键字来避免设计者犯错），对于初学者而言，入门用Verilog还是systemVerilog都可以，建议都简单了解一下。此外，群文件/文档资料/HDLBits.zip是李天瑞师兄使用原汁原味的SystemVerilog语法完成的刷题的答案，可以和知乎的专栏搭配食用。
